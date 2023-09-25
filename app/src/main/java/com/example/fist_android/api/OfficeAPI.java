@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.example.fist_android.model.Office;
 import com.example.fist_android.model.ResponseDTO;
+import com.example.fist_android.repository.OfficeRepository;
 import com.example.fist_android.retrofit.RetrofitAPI;
+import com.orhanobut.logger.Logger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,16 +24,18 @@ public class OfficeAPI {
     RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
 
     public void fetchOffice() {
-        Log.d("Office Fetch Start", "start");
-        retrofitAPI.getData().enqueue(new Callback<ResponseDTO<Office>>() {
+        Logger.d("Office Fetch Start");
+        retrofitAPI.getOfficeData().enqueue(new Callback<ResponseDTO<Office>>() {
             @Override
             public void onResponse(Call<ResponseDTO<Office>> call, Response<ResponseDTO<Office>> response) {
                 if (response.isSuccessful()) {
-//                    Log.d("Office Fetch DONE", response.body());
                     ResponseDTO<Office> officeList = response.body();
-                    Office office[] = officeList.getData();
-                    for(Office printOffice : office){
-                        printOffice.printOfficeData();
+                    Office offices[] = officeList.getData();
+                    for(Office office : offices){
+                        office.printOfficeData();
+                        OfficeRepository officeRepository = OfficeRepository.getInstance();
+                        officeRepository.officeList = offices;
+                        officeRepository.officeNameList.add(office.getOfficeName());
                     }
                 }
             }
@@ -41,6 +45,6 @@ public class OfficeAPI {
                 t.printStackTrace();
             }
         });
-        Log.d("Office Fetch Done", "Done");
+        Logger.d("Office Fetch Done");
     }
 }

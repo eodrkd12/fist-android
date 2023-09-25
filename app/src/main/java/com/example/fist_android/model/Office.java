@@ -41,7 +41,7 @@ public class Office {
     }
 
     public void printOfficeData(){
-        System.out.println("===============================");
+        System.out.println("===========Office===============");
         System.out.println("OfficeId : " + this.officeId);
         System.out.println("OfficeName : " + this.officeName);
         System.out.println("OfficeAddr : " + this.officeAddr);

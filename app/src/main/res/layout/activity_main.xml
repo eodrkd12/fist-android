@@ -26,18 +26,6 @@
                 android:text="wait"
                 android:textSize="30dp" />
 
-            <Button
-                android:id="@+id/ok_btnview"
-                android:layout_width="114dp"
-                android:layout_height="68dp"
-                android:text="button"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.7" />
 
         </LinearLayout>
 

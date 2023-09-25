@@ -10,4 +10,7 @@ public class ResponseDTO<T> {
     public T[] getData(){
         return this.data;
     }
+    public String getIsSuccess() {
+        return isSuccess;
+    }
 }
