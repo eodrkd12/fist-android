@@ -5,17 +5,23 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+import com.example.fist_android.model.Course;
 import com.example.fist_android.model.Monitor;
 import com.example.fist_android.model.Office;
 import com.example.fist_android.model.ResponseDTO;
 
 public interface RetrofitAPI {
     @GET("/office/list")
-    Call<ResponseDTO<Office>> getOfficeData();
+    Call<ResponseDTO<Office[]>> getOfficeData();
     @GET("/monitor/list/{officeId}")
-    Call<ResponseDTO<Monitor>> getMonitorData(
+    Call<ResponseDTO<Monitor[]>> getMonitorData(
             @Path("officeId") String officeId,
             @Query("offset") int offset,
             @Query("limit") int limit
+    );
+    @GET("/course/office/{officeId}/date/{courseDateStr}")
+    Call<ResponseDTO<Course>> getCourseData(
+            @Path("officeId") String officeId,
+            @Path("courseDateStr") String courseDateStr
     );
 }

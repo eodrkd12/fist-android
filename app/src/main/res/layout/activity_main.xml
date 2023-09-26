@@ -13,21 +13,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:orientation="vertical"
-            tools:ignore="MissingConstraints">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/fist"
+                android:layout_marginTop="200dp"
+                android:layout_marginBottom="200dp"/>
 
             <TextView
                 android:id="@+id/guideText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="wait"
+                android:text="데이터를 확인중입니다..."
                 android:textSize="30dp" />
-
-
         </LinearLayout>
+
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

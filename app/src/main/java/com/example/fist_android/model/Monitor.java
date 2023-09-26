@@ -5,18 +5,14 @@ import com.google.gson.annotations.SerializedName;
 public class Monitor {
     @SerializedName("monitorId")
     private String monitorId;
-
     @SerializedName("monitorName")
     private String monitorName;
-
     @SerializedName("monitorType")
-    private String monitorType;
-
+    private int monitorType;
     @SerializedName("exerciseType")
     private String exerciseType;
-
     @SerializedName("layoutType")
-    private String layoutType;
+    private int layoutType;
 
     public void setMonitorId(String monitorId){
         this.monitorId = monitorId;
@@ -24,32 +20,28 @@ public class Monitor {
     public String getMonitorId(){
         return this.monitorId;
     }
-
     public void setMonitorName(String monitorName){
         this.monitorName = monitorName;
     }
     public String getMonitorName(){
         return this.monitorName;
     }
-
-    public void setMonitorType(String monitorType){
+    public void setMonitorType(int monitorType){
         this.monitorType = monitorType;
     }
-    public String getMonitorType(){
+    public int getMonitorType(){
         return this.monitorType;
     }
-
     public void setExerciseType(String exerciseType){
         this.exerciseType = exerciseType;
     }
     public String getExerciseType(){
         return this.exerciseType;
     }
-
-    public void setLayoutType(String layoutType){
+    public void setLayoutType(int layoutType){
         this.layoutType = layoutType;
     }
-    public String getLayoutType(){
+    public int getLayoutType(){
         return this.layoutType;
     }
 

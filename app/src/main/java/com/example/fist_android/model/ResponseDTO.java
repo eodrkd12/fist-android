@@ -5,11 +5,12 @@ public class ResponseDTO<T> {
     private String code = "";
     private String message = "";
     private String count = "";
-    private T data[];
+    private T data;
 
-    public T[] getData(){
+    public T getData(){
         return this.data;
     }
+
     public String getIsSuccess() {
         return isSuccess;
     }

@@ -5,13 +5,10 @@ import com.google.gson.annotations.SerializedName;
 public class Office {
     @SerializedName("officeId")
     private String officeId;
-
     @SerializedName("officeName")
     private String officeName;
-
     @SerializedName("officeAddr")
     private String officeAddr;
-
     @SerializedName("officeTel")
     private String officeTel;
 

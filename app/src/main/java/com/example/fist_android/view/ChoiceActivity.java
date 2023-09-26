@@ -6,22 +6,17 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import com.example.fist_android.R;
-import com.example.fist_android.api.MonitorAPI;
 import com.example.fist_android.databinding.ActivityChoiceBinding;
-import com.example.fist_android.model.Office;
 import com.example.fist_android.repository.MonitorRepository;
 import com.example.fist_android.repository.OfficeRepository;
 import com.orhanobut.logger.Logger;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public class ChoiceActivity extends AppCompatActivity {
 
@@ -61,6 +56,7 @@ public class ChoiceActivity extends AppCompatActivity {
                     return;
                 }
                 seletedOfficeIndex = i;
+                Logger.d("SeletedOfficeIndex : " + seletedOfficeIndex);
 
                 // Monitor 데이터를 비동기로 가져오고 응답이 도착하면 UI 업데이트
                 monitorRepository.fetchMonitor(officeRepository.officeList[i].getOfficeId(), 0, 10, new MonitorRepository.MonitorFetchCallback() {
@@ -92,9 +88,22 @@ public class ChoiceActivity extends AppCompatActivity {
                     return;
                 }
                 seletedMonitorIndex = i;
+                Logger.d("SeletedMonitorIndex : " + seletedMonitorIndex);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+
+        binding.button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                officeRepository.saveOfficeData(getApplicationContext(), seletedOfficeIndex);
+                monitorRepository.saveMonitorData(getApplicationContext(), seletedMonitorIndex);
+
+                Intent intent = new Intent(ChoiceActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
         });
     }
 }

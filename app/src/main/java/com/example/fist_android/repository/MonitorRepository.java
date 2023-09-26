@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +37,13 @@ public class MonitorRepository {
     //=============================================================//
     public Monitor[] monitorList;
     public ArrayList<String> monitorNameList = new ArrayList<>();
+
+    public String monitorId;
+    public String monitorName;
+    public int monitorType;
+    public String exerciseType;
+    public int layoutType;
+
     //=============================================================//
     //Retrofit
     //=============================================================//
@@ -44,21 +52,20 @@ public class MonitorRepository {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
-    //=============================================================//
     public void fetchMonitor(String officeId, int offest, int limit, final MonitorFetchCallback callback){
         Logger.d("Monitor Fetch Start");
-        retrofitAPI.getMonitorData(officeId, offest, limit).enqueue(new Callback<ResponseDTO<Monitor>>() {
+        retrofitAPI.getMonitorData(officeId, offest, limit).enqueue(new Callback<ResponseDTO<Monitor[]>>() {
             @Override
-            public void onResponse(Call<ResponseDTO<Monitor>> call, Response<ResponseDTO<Monitor>> response) {
+            public void onResponse(Call<ResponseDTO<Monitor[]>> call, Response<ResponseDTO<Monitor[]>> response) {
                 if(response.isSuccessful()){
-                    ResponseDTO<Monitor> monitorData = response.body();
-                    Monitor monitors[] = monitorData.getData();
+                    ResponseDTO<Monitor[]> monitorData = response.body();
+                    Monitor[] monitors = monitorData.getData();
                     if(monitors.length == 0){
                         monitorList = null;
                         monitorNameList.clear();
                     }
                     for(Monitor monitor: monitors){
-                        monitor.printMonitorData();
+//                        monitor.printMonitorData();
                         monitorList = monitors;
                         monitorNameList.add(monitor.getMonitorName());
                     }
@@ -69,8 +76,9 @@ public class MonitorRepository {
                     }
                 }
             }
+
             @Override
-            public void onFailure(Call<ResponseDTO<Monitor>> call, Throwable t) {
+            public void onFailure(Call<ResponseDTO<Monitor[]>> call, Throwable t) {
                 t.printStackTrace();
             }
         });
@@ -83,6 +91,22 @@ public class MonitorRepository {
     }
 
     //=============================================================//
+    //SharedPreference
+    //=============================================================//
+    public void getMonitorData(Context context){
+        monitorInstance.monitorId = PreferenceManager.getString(context, "monitorId");
+        monitorInstance.monitorName = PreferenceManager.getString(context, "monitorName");
+        monitorInstance.monitorType = PreferenceManager.getInt(context, "monitorType");
+        monitorInstance.exerciseType = PreferenceManager.getString(context, "exerciseType");
+        monitorInstance.layoutType = PreferenceManager.getInt(context, "layoutType");
+    }
+    public void saveMonitorData(Context context, int index){
+        PreferenceManager.setString(context, "monitorId", monitorList[index].getMonitorId());
+        PreferenceManager.setString(context, "monitorName", monitorList[index].getMonitorName());
+        PreferenceManager.setInt(context, "monitorType", monitorList[index].getMonitorType());
+        PreferenceManager.setString(context, "exerciseType", monitorList[index].getExerciseType());
+        PreferenceManager.setInt(context, "layoutType", monitorList[index].getLayoutType());
+    }
     public void saveStringMonitorData(Context context, String key, String value){
         PreferenceManager.setString(context, key, value);
     }
@@ -94,5 +118,17 @@ public class MonitorRepository {
     }
     public int getIntMonitorData(Context context, String key){
         return PreferenceManager.getInt(context, key);
+    }
+    //=============================================================//
+
+    //=============================================================//
+    //Print
+    //=============================================================//
+    public void printMonitorData(){
+        Logger.i("MonitorId : " + monitorInstance.monitorId + "\n" +
+                "MonitorName : " + monitorInstance.monitorName + "\n" +
+                "MonitorType : " + monitorInstance.monitorType + "\n" +
+                "ExerciseType : " + monitorInstance.exerciseType + "\n" +
+                "LayoutType : " + monitorInstance.layoutType);
     }
 }
