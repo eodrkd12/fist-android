@@ -12,6 +12,7 @@ import com.example.fist_android.R;
 import com.example.fist_android.api.OfficeAPI;
 import com.example.fist_android.databinding.ActivityMainBinding;
 import com.example.fist_android.preference.PreferenceManager;
+import com.example.fist_android.repository.OfficeRepository;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
@@ -22,6 +23,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
+    OfficeRepository officeRepository = OfficeRepository.getInstance();
     ActivityMainBinding binding;
     Timer timer = new Timer();
     TimerTask timerTask = new TimerTask() {
@@ -50,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_main);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        OfficeAPI officeAPI = new OfficeAPI();
-        officeAPI.fetchOffice();
+        officeRepository.fetchOffice();
         timer.schedule(timerTask, 0, 3000);
     }
 

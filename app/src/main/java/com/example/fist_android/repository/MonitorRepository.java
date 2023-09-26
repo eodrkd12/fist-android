@@ -32,18 +32,18 @@ public class MonitorRepository {
         }
         return monitorInstance;
     }
+
+    //=============================================================//
+    public Monitor[] monitorList;
+    public ArrayList<String> monitorNameList = new ArrayList<>();
+    //=============================================================//
+    //Retrofit
     //=============================================================//
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://211.107.110.77:3000")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
-    //=============================================================//
-
-    public Monitor[] monitorList;
-    public ArrayList<String> monitorNameList = new ArrayList<>();
-
-
     //=============================================================//
     public void fetchMonitor(String officeId, int offest, int limit, final MonitorFetchCallback callback){
         Logger.d("Monitor Fetch Start");
@@ -62,7 +62,6 @@ public class MonitorRepository {
                         monitorList = monitors;
                         monitorNameList.add(monitor.getMonitorName());
                     }
-                    Logger.d("Response DATA: " + monitorNameList);
 
                     // 응답을 처리한 후에 콜백을 호출하여 UI 업데이트를 요청합니다.
                     if (callback != null) {
@@ -70,7 +69,6 @@ public class MonitorRepository {
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseDTO<Monitor>> call, Throwable t) {
                 t.printStackTrace();
