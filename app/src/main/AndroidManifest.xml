@@ -15,6 +15,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".view.ExerciseActivity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
             android:name=".view.ChoiceActivity"
             android:exported="false" />
         <activity

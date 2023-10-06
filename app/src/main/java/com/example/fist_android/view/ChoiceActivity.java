@@ -1,7 +1,5 @@
 package com.example.fist_android.view;
 
-import static com.example.fist_android.repository.OfficeRepository.getInstance;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -27,8 +25,8 @@ public class ChoiceActivity extends AppCompatActivity {
 
     int seletedOfficeIndex;
     int seletedMonitorIndex;
-    private boolean isInitializing = true;
-    private boolean isInitializing2 = true;
+    private boolean officeIsInitializing = true;
+    private boolean monitorIsInitializing = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +35,7 @@ public class ChoiceActivity extends AppCompatActivity {
         actionBar.hide();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_choice);
+
 //        choiceViewModel = new ChoiceViewModel(MonitorRepository.getInstance());
 //        binding.setChoiceViewModel(choiceViewModel);
 
@@ -51,8 +50,8 @@ public class ChoiceActivity extends AppCompatActivity {
         binding.officeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(isInitializing){
-                    isInitializing = false;
+                if(officeIsInitializing){
+                    officeIsInitializing = false;
                     return;
                 }
                 seletedOfficeIndex = i;
@@ -83,8 +82,8 @@ public class ChoiceActivity extends AppCompatActivity {
         binding.monitorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(isInitializing2){
-                    isInitializing2 = false;
+                if(monitorIsInitializing){
+                    monitorIsInitializing = false;
                     return;
                 }
                 seletedMonitorIndex = i;

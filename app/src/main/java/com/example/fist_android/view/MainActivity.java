@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -29,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     CourseRepository courseRepository = CourseRepository.getInstance();
     ActivityMainBinding binding;
     Timer timer = new Timer();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,25 +53,23 @@ public class MainActivity extends AppCompatActivity {
 //        setContentView(R.layout.activity_main);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-//        courseRepository.fetchCourseData(officeRepository.officeId, "2023-09-19", new CourseRepository.CourseFetchCallback() {
-//            @Override
-//            public void onCourseFetchComplete() {
-//                courseRepository.printCourseData();
-//            }
-//        });
-
         officeRepository.fetchOffice(new OfficeRepository.OfficeFetchCallback() {
             @Override
             public void onOfficeFetchComplete() {
                 if(checkData()){
                     binding.guideText.setText("데이터 확인 완료...");
-                    courseRepository.fetchCourseData(officeRepository.officeId, "2023-09-19", new CourseRepository.CourseFetchCallback() {
-                        @Override
-                        public void onCourseFetchComplete() {
-                            courseRepository.printCourseData();
-                            binding.guideText.setText("데이터 다운 완료");
-                        }
-                    });
+
+                    Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
+                    startActivity(intent);
+                    finish();
+                    timer.cancel();
+//                    courseRepository.fetchCourseData(officeRepository.officeId, "2023-09-19", new CourseRepository.CourseFetchCallback() {
+//                        @Override
+//                        public void onCourseFetchComplete() {
+//                            courseRepository.printCourseData();
+//                            binding.guideText.setText("데이터 다운 완료");
+//                        }
+//                    });
                 }
                 else{
                     Logger.i("화면전환");
@@ -84,6 +82,19 @@ public class MainActivity extends AppCompatActivity {
         });
 //        timer.schedule(timerTask, 3000);
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int monitorType = monitorRepository.getIntMonitorData(getApplicationContext(), "monitorType"); // 모니터 타입 가져오기
+
+        if (monitorType == 1) {
+            // 세로 모드 레이아웃 설정
+            Logger.d("세로모드");
+        } else if (monitorType == 2) {
+            // 가로 모드 레이아웃 설정
+            Logger.d("가로모드");
+        }
+    }
 
     private Boolean checkData(){
         String officeId = officeRepository.getStringOfficeData(getApplicationContext(), "officeId");
@@ -95,5 +106,4 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
-
 }
