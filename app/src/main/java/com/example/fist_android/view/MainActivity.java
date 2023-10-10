@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.fist_android.R;
 import com.example.fist_android.databinding.ActivityMainBinding;
+import com.example.fist_android.preference.PreferenceManager;
 import com.example.fist_android.repository.CourseRepository;
 import com.example.fist_android.repository.ExerciseRepository;
 import com.example.fist_android.repository.MonitorRepository;
@@ -68,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
+        officeRepository.printOfficeData();
+        monitorRepository.printMonitorData();
+
         officeRepository.fetchOffice(new OfficeRepository.OfficeFetchCallback() {
             @Override
             public void onOfficeFetchComplete() {
@@ -92,6 +96,11 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if(courseRepository.downloadTodayCouse){
                 binding.guideText.setText("데이터 다운 완료...");
+
+                Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
+                startActivity(intent);
+                finish();
+                timer.cancel();
             }
             if(exerciseRepository.exerciseStart || exerciseRepository.exerciseTestStart){
                 //화면전환
@@ -125,8 +134,5 @@ public class MainActivity extends AppCompatActivity {
         else{
             return false;
         }
-    }
-    private void setWidget(){
-        gudieText = binding.guideText;
     }
 }

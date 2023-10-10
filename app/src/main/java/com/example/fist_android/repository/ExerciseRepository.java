@@ -1,5 +1,10 @@
 package com.example.fist_android.repository;
 
+import android.net.Uri;
+import android.widget.VideoView;
+
+import java.util.ArrayList;
+
 public class ExerciseRepository {
     //=============================================================//
     //Signleton
@@ -13,14 +18,15 @@ public class ExerciseRepository {
         return exerciseInstance;
     }
     //=============================================================//
+    CourseRepository courseRepository = CourseRepository.getInstance();
+
+    public int todayExerciseLength;
 
     public boolean exerciseStart = false;
     public boolean exerciseTestStart = false;
     public boolean exerciseStop = false;
     public boolean exercisePause = false;
 
+    //=============================================================//
 
-    public void createVideoView(){
-
-    }
 }
