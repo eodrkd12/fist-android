@@ -50,7 +50,7 @@ public class OfficeRepository {
             .build();
 
     RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
-    //=============================================================//
+
     public void fetchOffice(final OfficeRepository.OfficeFetchCallback callback) {
         Logger.d("Office Fetch Start");
         retrofitAPI.getOfficeData().enqueue(new Callback<ResponseDTO<Office[]>>() {

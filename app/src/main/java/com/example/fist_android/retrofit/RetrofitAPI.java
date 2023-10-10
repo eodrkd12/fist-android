@@ -11,14 +11,31 @@ import com.example.fist_android.model.Office;
 import com.example.fist_android.model.ResponseDTO;
 
 public interface RetrofitAPI {
+    /**
+     *
+     * Office
+     */
     @GET("/office/list")
     Call<ResponseDTO<Office[]>> getOfficeData();
+
+    /**
+     * Monitor
+     * @param officeId
+     * @param offset
+     * @param limit
+     */
     @GET("/monitor/list/{officeId}")
     Call<ResponseDTO<Monitor[]>> getMonitorData(
             @Path("officeId") String officeId,
             @Query("offset") int offset,
             @Query("limit") int limit
     );
+
+    /**
+     * Course
+     * @param officeId
+     * @param courseDateStr
+     */
     @GET("/course/office/{officeId}/date/{courseDateStr}")
     Call<ResponseDTO<Course>> getCourseData(
             @Path("officeId") String officeId,

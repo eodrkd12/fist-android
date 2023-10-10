@@ -4,37 +4,56 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
+import android.widget.GridLayout;
+import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.example.fist_android.R;
 import com.example.fist_android.databinding.ActivityExerciseBinding;
+import com.example.fist_android.repository.CourseRepository;
+import com.example.fist_android.repository.ExerciseRepository;
+import com.orhanobut.logger.Logger;
 
 public class ExerciseActivity extends AppCompatActivity {
-
-    private long maxSeconds = 10 * 1000;
+    ActivityExerciseBinding binding;
+    ExerciseRepository exerciseRepository = ExerciseRepository.getInstance();
+    CourseRepository courseRepository = CourseRepository.getInstance();
+    //=============================================================//
     private enum TimerStatus {
         STARTED,
         STOPPED
     }
+    private int maxSeconds = 30 * 1000;
     private TimerStatus timerStatus = TimerStatus.STOPPED;
     private CountDownTimer countDownTimer;
     private ProgressBar progressBarCircle;
-    ActivityExerciseBinding binding;
+    private TextView progressText;
+    //=============================================================//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_exercise);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_exercise);
         progressBarCircle = binding.timerProgressBar;
+        progressText = binding.progressTextView;
 
         //TopBar
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
         startStop();
+        Uri videoUri= Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
+
     }
+
 
     /**
      * 카운트 다운 시간을 리셋하고 재시작하는 기능
@@ -51,17 +70,9 @@ public class ExerciseActivity extends AppCompatActivity {
 
         if (timerStatus == TimerStatus.STOPPED) {
             setProgressBarValues();
-
-//            imageViewReset.setVisibility(View.VISIBLE);
-//            imageViewStartStop.setImageResource(R.drawable.ic_baseline_stop_circle_24);
-//            editTextMinute.setEnabled(false);
             timerStatus = TimerStatus.STARTED;
             startCountDownTimer();
-
         } else {
-//            imageViewReset.setVisibility(View.GONE);
-//            imageViewStartStop.setImageResource(R.drawable.ic_baseline_play_circle_24);
-//            editTextMinute.setEnabled(true);
             timerStatus = TimerStatus.STOPPED;
             stopCountDownTimer();
         }
@@ -76,7 +87,10 @@ public class ExerciseActivity extends AppCompatActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 int progress = (int) (millisUntilFinished);
-//                textViewTime.setText(hmsTimeFormatter(millisUntilFinished));
+                if ((maxSeconds - millisUntilFinished) % 1000 > 0) {
+                    maxSeconds = maxSeconds - 1000;
+                    progressText.setText(String.valueOf(maxSeconds / 1000));
+                }
                 progressBarCircle.setProgress((int) (progress));
             }
 
@@ -101,8 +115,7 @@ public class ExerciseActivity extends AppCompatActivity {
      * 원형 프로그레스 바에 값 세팅
      */
     private void setProgressBarValues() {
-//        progressBarCircle.setMax((int) timeCountInMilliSeconds / 1000);
-//        progressBarCircle.setProgress((int) timeCountInMilliSeconds / 1000);
+        progressText.setText(String.valueOf(maxSeconds / 1000));
 
         progressBarCircle.setMax((int) maxSeconds);
         progressBarCircle.setProgress((int) maxSeconds);

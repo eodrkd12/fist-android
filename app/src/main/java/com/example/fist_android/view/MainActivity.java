@@ -5,52 +5,67 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.TextView;
 
 import com.example.fist_android.R;
 import com.example.fist_android.databinding.ActivityMainBinding;
-import com.example.fist_android.preference.PreferenceManager;
 import com.example.fist_android.repository.CourseRepository;
+import com.example.fist_android.repository.ExerciseRepository;
 import com.example.fist_android.repository.MonitorRepository;
 import com.example.fist_android.repository.OfficeRepository;
+import com.example.fist_android.socket.SocketManager;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
 
+import java.time.LocalDate;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+import io.socket.client.Socket;
 
+public class MainActivity extends AppCompatActivity {
+    ActivityMainBinding binding;
     OfficeRepository officeRepository = OfficeRepository.getInstance();
     MonitorRepository monitorRepository = MonitorRepository.getInstance();
     CourseRepository courseRepository = CourseRepository.getInstance();
-    ActivityMainBinding binding;
+    ExerciseRepository exerciseRepository = ExerciseRepository.getInstance();
+    SocketManager socketManager = SocketManager.getInstance();
     Timer timer = new Timer();
+    //=============================================================//
+    TextView gudieText;
+    //=============================================================//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //TopBar
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
+        //Test
+//        PreferenceManager.clear(getApplicationContext());
+
         //Logger
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
                 .showThreadInfo(false)
 //                .methodCount(0)
                 .build();
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
-        //Test
-//        PreferenceManager.clear(getApplicationContext());
-        //Internal Data
+
+        //Get Internal Data
         officeRepository.getOfficeData(getApplicationContext());
         monitorRepository.getMonitorData(getApplicationContext());
-        officeRepository.printOfficeData();
-        monitorRepository.printMonitorData();
+//        officeRepository.printOfficeData();
+//        monitorRepository.printMonitorData();
 
-//        setContentView(R.layout.activity_main);
+        //Socket
+        socketManager.getSocket().on(Socket.EVENT_CONNECT, socketManager.onConnect);
+        socketManager.getSocket().on("course", socketManager.getTodayCourse);
+        socketManager.getSocket().on("start", socketManager.startExercise);
+        socketManager.getSocket().on("teststart", socketManager.startTestExercise);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         officeRepository.fetchOffice(new OfficeRepository.OfficeFetchCallback() {
@@ -58,21 +73,10 @@ public class MainActivity extends AppCompatActivity {
             public void onOfficeFetchComplete() {
                 if(checkData()){
                     binding.guideText.setText("데이터 확인 완료...");
-
-                    Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
-                    startActivity(intent);
-                    finish();
-                    timer.cancel();
-//                    courseRepository.fetchCourseData(officeRepository.officeId, "2023-09-19", new CourseRepository.CourseFetchCallback() {
-//                        @Override
-//                        public void onCourseFetchComplete() {
-//                            courseRepository.printCourseData();
-//                            binding.guideText.setText("데이터 다운 완료");
-//                        }
-//                    });
                 }
                 else{
-                    Logger.i("화면전환");
+                    //화면전환
+                    Logger.d("Internal Data is Empty Change ChoiceActivity");
                     Intent intent = new Intent(MainActivity.this, ChoiceActivity.class);
                     startActivity(intent);
                     finish();
@@ -80,8 +84,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-//        timer.schedule(timerTask, 3000);
+
+        timer.schedule(timerTask, 0, 3000);
     }
+    TimerTask timerTask = new TimerTask() {
+        @Override
+        public void run() {
+            if(courseRepository.downloadTodayCouse){
+                binding.guideText.setText("데이터 다운 완료...");
+            }
+            if(exerciseRepository.exerciseStart || exerciseRepository.exerciseTestStart){
+                //화면전환
+                Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
+                startActivity(intent);
+                finish();
+                timer.cancel();
+            }
+        }
+    };
     @Override
     protected void onResume() {
         super.onResume();
@@ -105,5 +125,8 @@ public class MainActivity extends AppCompatActivity {
         else{
             return false;
         }
+    }
+    private void setWidget(){
+        gudieText = binding.guideText;
     }
 }

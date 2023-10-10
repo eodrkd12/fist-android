@@ -34,9 +34,8 @@ public class CourseRepository {
         return courseInstance;
     }
     //=============================================================//
-
     MonitorRepository monitorRepository = MonitorRepository.getInstance();
-
+    public boolean downloadTodayCouse = false;
     public Course course;
     public CourseCategory[] courseCategory;
     public ArrayList<ExerciseList> exerciseList = new ArrayList<>();
@@ -45,8 +44,6 @@ public class CourseRepository {
     public ArrayList<ExerciseList> demoExerciseList = new ArrayList<>();
     public ArrayList<Roundcase> weightRoundcase = new ArrayList<>();
     public ArrayList<Roundcase> hiitRoundcase = new ArrayList<>();
-
-
     //=============================================================//
     //Retrofit
     //=============================================================//
@@ -55,7 +52,7 @@ public class CourseRepository {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
-    //=============================================================//
+
     public void fetchCourseData(String officeId, String courseDateStr, final CourseRepository.CourseFetchCallback callback) {
         Logger.d("Course Fetch Start");
         retrofitAPI.getCourseData(officeId, courseDateStr).enqueue(new Callback<ResponseDTO<Course>>() {
@@ -134,24 +131,24 @@ public class CourseRepository {
     //Print
     //=============================================================//
     public void printCourseData(){
-        for(ExerciseList data : courseInstance.exerciseList){
-            Logger.i("ExerciseName : " + data.getExercise().getExerciseName());
-        }
+//        for(ExerciseList data : courseInstance.exerciseList){
+//            Logger.i("ExerciseName : " + data.getExercise().getExerciseName());
+//        }
         Logger.wtf("ExerciseLength : " + courseInstance.exerciseList.size());
 
-        for(ExerciseList data : courseInstance.warmupExerciseList){
-            Logger.i("WarmUpExerciseName : " + data.getExercise().getExerciseName());
-        }
+//        for(ExerciseList data : courseInstance.warmupExerciseList){
+//            Logger.i("WarmUpExerciseName : " + data.getExercise().getExerciseName());
+//        }
         Logger.wtf("WarmUpExerciseName : " + courseInstance.warmupExerciseList.size());
 
-        for(ExerciseList data : courseInstance.cooldownExerciseList){
-            Logger.i("CoolDownExerciseName : " + data.getExercise().getExerciseName());
-        }
+//        for(ExerciseList data : courseInstance.cooldownExerciseList){
+//            Logger.i("CoolDownExerciseName : " + data.getExercise().getExerciseName());
+//        }
         Logger.wtf("CoolDownExerciseName : " + courseInstance.cooldownExerciseList.size());
 
-        for(ExerciseList data : courseInstance.demoExerciseList){
-            Logger.i("DemoExerciseName : " + data.getExercise().getExerciseName());
-        }
+//        for(ExerciseList data : courseInstance.demoExerciseList){
+//            Logger.i("DemoExerciseName : " + data.getExercise().getExerciseName());
+//        }
         Logger.wtf("DemoExerciseName : " + courseInstance.demoExerciseList.size());
     }
 
