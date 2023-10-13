@@ -1,5 +1,6 @@
 package com.example.fist_android.repository;
 
+import com.example.fist_android.common.Constant;
 import com.example.fist_android.model.Course;
 import com.example.fist_android.model.CourseCategory;
 import com.example.fist_android.model.ExerciseList;
@@ -44,13 +45,13 @@ public class CourseRepository {
     //Retrofit
     //=============================================================//
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://211.107.110.77:3000")
+            .baseUrl(Constant.BE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
 
     public void fetchCourseData(String officeId, String courseDateStr, final CourseRepository.CourseFetchCallback callback) {
-        Logger.d("Course Fetch Start");
+        Logger.d("Course Fetch Start", officeId+ " " + courseDateStr);
         retrofitAPI.getCourseData(officeId, courseDateStr).enqueue(new Callback<ResponseDTO<Course>>() {
             @Override
             public void onResponse(Call<ResponseDTO<Course>> call, Response<ResponseDTO<Course>> response) {
@@ -58,6 +59,7 @@ public class CourseRepository {
                     ResponseDTO<Course> courseData = response.body();
                     course = courseData.getData();
                     courseCategory = course.getCategoryList();
+                    Logger.d("eodrkd", course);
                     for(CourseCategory categoryList : courseCategory){
                         if(categoryList.getExerciseType().compareTo("WARM UP") == 0){
                             ExerciseList[] wuDataList = categoryList.getExerciseList();

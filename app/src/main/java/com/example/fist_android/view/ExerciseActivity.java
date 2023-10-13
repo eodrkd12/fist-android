@@ -9,28 +9,19 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.fist_android.R;
 import com.example.fist_android.databinding.ActivityExerciseBinding;
 import com.example.fist_android.repository.CourseRepository;
 import com.example.fist_android.repository.ExerciseRepository;
-import com.orhanobut.logger.Logger;
-
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 public class ExerciseActivity extends AppCompatActivity {
     ActivityExerciseBinding binding;
@@ -51,9 +42,11 @@ public class ExerciseActivity extends AppCompatActivity {
     private RelativeLayout headerLeft;
     private LinearLayout firstLayout;
     private LinearLayout secondLayout;
-    private LinearLayout thridLayout;
+    private LinearLayout thirdLayout;
     private LinearLayout fourthLayout;
-    private float screenHeightInDp;
+
+    private float realWidthInDp;
+    private float realHeightInDp;
     //=============================================================//
     float headerFontRate = 3.5f;
     float headerPaddingRate = 2f;
@@ -63,13 +56,20 @@ public class ExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_exercise);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_exercise);
-        //TopBar
+
+        /**
+         * activity 사전 처리
+         * 앱 Topbar 제거
+         */
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        // 현재 화면의 높이 가져오기
+        /**
+         * Device의 실제 Height값을 DP단위로 가져와서 저장
+         */
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        screenHeightInDp = displayMetrics.heightPixels / displayMetrics.density;
+        realWidthInDp = displayMetrics.widthPixels / displayMetrics.density;
+        realHeightInDp = displayMetrics.heightPixels / displayMetrics.density;
 
         //binding
         progressBarCircle = binding.timerProgressBar;
@@ -78,18 +78,20 @@ public class ExerciseActivity extends AppCompatActivity {
         remainSetText = binding.remainSetText;
         headerLeft = binding.headerLeft;
 
+
+        //video row 1~4
         firstLayout = binding.videoLayout0;
         secondLayout = binding.videoLayout1;
-        thridLayout = binding.videoLayout2;
+        thirdLayout = binding.videoLayout2;
         fourthLayout = binding.videoLayout3;
 
-        remainGuideText.setTextSize(headerFontRate * screenHeightInDp / 100);
-        remainSetText.setTextSize(headerFontRate * screenHeightInDp / 100);
+        remainGuideText.setTextSize(headerFontRate * realHeightInDp / 100);
+        remainSetText.setTextSize(headerFontRate * realHeightInDp / 100);
         headerLeft.setPadding(
-                (int) (headerPaddingRate * screenHeightInDp / 100),
-                (int) (headerPaddingRate * screenHeightInDp / 100),
-                (int) (headerPaddingRate * screenHeightInDp / 100),
-                (int) (headerPaddingRate * screenHeightInDp / 100));
+                (int) (headerPaddingRate * realHeightInDp / 100),
+                (int) (headerPaddingRate * realHeightInDp / 100),
+                (int) (headerPaddingRate * realHeightInDp / 100),
+                (int) (headerPaddingRate * realHeightInDp / 100));
 
 //        startStop();
 
@@ -180,7 +182,7 @@ public class ExerciseActivity extends AppCompatActivity {
     public void setExerciseVideo(){
         boolean[] nullCheck = new boolean[8];
         VideoView videoView[] = new VideoView[8];
-        LinearLayout videoFrmae[] = new LinearLayout[8];
+        LinearLayout videoFrame[] = new LinearLayout[8];
         int rowCheck = 0;
 
         videoView[0] = binding.videoView0;
@@ -192,31 +194,60 @@ public class ExerciseActivity extends AppCompatActivity {
         videoView[6] = binding.videoView6;
         videoView[7] = binding.videoView7;
 
-        videoFrmae[0] = binding.videoFrame0;
-        videoFrmae[1] = binding.videoFrame1;
-        videoFrmae[2] = binding.videoFrame2;
-        videoFrmae[3] = binding.videoFrame3;
-        videoFrmae[4] = binding.videoFrame4;
-        videoFrmae[5] = binding.videoFrame5;
-        videoFrmae[6] = binding.videoFrame6;
-        videoFrmae[7] = binding.videoFrame7;
+        videoFrame[0] = binding.videoFrame0;
+        videoFrame[1] = binding.videoFrame1;
+        videoFrame[2] = binding.videoFrame2;
+        videoFrame[3] = binding.videoFrame3;
+        videoFrame[4] = binding.videoFrame4;
+        videoFrame[5] = binding.videoFrame5;
+        videoFrame[6] = binding.videoFrame6;
+        videoFrame[7] = binding.videoFrame7;
 
 
         for(int i = 0; i < 8; i++){
             if(courseRepository.exerciseList.get(i) != null){
                 String exerciseDirName = courseRepository.exerciseList.get(i).getExercise().getExerciseDirName();
                 String exerciseFileName = courseRepository.exerciseList.get(i).getExercise().getExerciseFileName();
-                Uri videoUri= Uri.parse("http://211.107.110.77:3000/video/" + exerciseDirName + "/" + exerciseFileName);
+//                Uri videoUri= Uri.parse(Constant.BE_URL + "/video/" + exerciseDirName + "/" + exerciseFileName);
+                Uri videoUri = Uri.parse("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
                 videoView[i].setVideoURI(videoUri);
                 nullCheck[i] = false;
             }
             else{
-//                videoView[i].setVisibility(View.GONE);
-                videoFrmae[i].setVisibility(View.GONE);
+                videoFrame[i].setVisibility(View.GONE);
                 nullCheck[i] = true;
             }
-            videoFrmae[i].setPadding(0, 0, 0, (int)(2f * screenHeightInDp / 100));
         }
+
+        LinearLayout.LayoutParams leftParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        leftParams.weight=1;
+        leftParams.setMargins(0,0,(int)(1f * realHeightInDp / 100),0);
+        LinearLayout.LayoutParams rightParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        rightParams.weight=1;
+//        leftParams.setMargins((int)(0.5f * realHeightInDp / 100),0,0,0);
+
+        if(!nullCheck[0] && !nullCheck[1]){
+            videoFrame[0].setLayoutParams(leftParams);
+            videoFrame[1].setLayoutParams(rightParams);
+        }
+        if(!nullCheck[2] && !nullCheck[3]){
+            videoFrame[2].setLayoutParams(leftParams);
+            videoFrame[3].setLayoutParams(rightParams);
+
+        }
+        if(!nullCheck[4] && !nullCheck[5]){
+            videoFrame[4].setLayoutParams(leftParams);
+            videoFrame[5].setLayoutParams(rightParams);
+        }
+        if(!nullCheck[6] && !nullCheck[7]){
+            videoFrame[6].setLayoutParams(leftParams);
+            videoFrame[7].setLayoutParams(rightParams);
+        }
+
 
         for(int i = 0; i < 8; i += 2){
             if(nullCheck[i] && nullCheck[i+1]){
@@ -232,7 +263,7 @@ public class ExerciseActivity extends AppCompatActivity {
                         break;
                     case 4:
 //                        thridLayout = binding.videoLayout2;
-                        thridLayout.setVisibility(View.GONE);
+                        thirdLayout.setVisibility(View.GONE);
                         break;
                     case 6:
 //                        fourthLayout = binding.videoLayout3;
@@ -242,26 +273,48 @@ public class ExerciseActivity extends AppCompatActivity {
             }
         }
 
-        if(rowCheck == 4){
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            params.weight = 0.175f;
-            firstLayout.setLayoutParams(params);
-            secondLayout.setLayoutParams(params);
-            thridLayout.setLayoutParams(params);
-            fourthLayout.setLayoutParams(params);
+        float weight = rowCheck == 4 ? 0.175f : 0.22f;
+
+        LinearLayout.LayoutParams firstParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, (int) ((weight * 100) * realHeightInDp / 100)
+        );
+        firstParams.weight = weight;
+        LinearLayout.LayoutParams secondParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, (int) ((weight * 100) * realHeightInDp / 100)
+        );
+        secondParams.weight = weight;
+        LinearLayout.LayoutParams thirdParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, (int) ((weight * 100) * realHeightInDp / 100)
+        );
+        thirdParams.weight = weight;
+        LinearLayout.LayoutParams fourthParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, (int) ((weight * 100) * realHeightInDp / 100)
+        );
+        fourthParams.weight = weight;
+
+
+        if(!nullCheck[0] || !nullCheck[1]){
+            if((!nullCheck[2] || !nullCheck[3])
+            || (!nullCheck[4] || !nullCheck[5])
+            || (!nullCheck[6] || !nullCheck[7])){
+                firstParams.setMargins((int)(1f * realHeightInDp / 100),0,(int)(1f * realHeightInDp / 100),(int)(2f * realHeightInDp / 100));
+            }
         }
-        else{
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            params.weight = 0.22f;
-            firstLayout.setLayoutParams(params);
-            secondLayout.setLayoutParams(params);
-            thridLayout.setLayoutParams(params);
-            fourthLayout.setLayoutParams(params);
+        if((!nullCheck[2] || !nullCheck[3])) {
+            if((!nullCheck[4] || !nullCheck[5])|| (!nullCheck[6] || !nullCheck[7])){
+                secondParams.setMargins((int)(1f * realHeightInDp / 100),0,(int)(1f * realHeightInDp / 100),(int)(2f * realHeightInDp / 100));
+            }
         }
+        if((!nullCheck[4] || !nullCheck[5])){
+            if((!nullCheck[6] || !nullCheck[7])){
+                thirdParams.setMargins((int)(1f * realHeightInDp / 100),0,(int)(1f * realHeightInDp / 100),(int)(2f * realHeightInDp / 100));
+            }
+        }
+        fourthParams.setMargins((int)(1f * realHeightInDp / 100),0,(int)(1f * realHeightInDp / 100),0);
+        firstLayout.setLayoutParams(firstParams);
+        secondLayout.setLayoutParams(secondParams);
+        thirdLayout.setLayoutParams(thirdParams);
+        fourthLayout.setLayoutParams(fourthParams);
 
         for(int i = 0; i < 8; i++){
             final int currentIndex = i;

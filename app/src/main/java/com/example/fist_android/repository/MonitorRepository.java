@@ -2,6 +2,7 @@ package com.example.fist_android.repository;
 
 import android.content.Context;
 
+import com.example.fist_android.common.Constant;
 import com.example.fist_android.model.Monitor;
 import com.example.fist_android.model.Office;
 import com.example.fist_android.model.ResponseDTO;
@@ -11,6 +12,7 @@ import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -36,7 +38,7 @@ public class MonitorRepository {
 
     //=============================================================//
     public Monitor[] monitorList;
-    public ArrayList<String> monitorNameList = new ArrayList<>();
+    public ArrayList<String> monitorNameList = new ArrayList<>(Arrays.asList("모니터를 선택해주세요."));
 
     public String monitorId;
     public String monitorName;
@@ -48,7 +50,7 @@ public class MonitorRepository {
     //Retrofit
     //=============================================================//
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://211.107.110.77:3000")
+            .baseUrl(Constant.BE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);

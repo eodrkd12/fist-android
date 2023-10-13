@@ -72,23 +72,6 @@ public class MainActivity extends AppCompatActivity {
         officeRepository.printOfficeData();
         monitorRepository.printMonitorData();
 
-        officeRepository.fetchOffice(new OfficeRepository.OfficeFetchCallback() {
-            @Override
-            public void onOfficeFetchComplete() {
-                if(checkData()){
-                    binding.guideText.setText("데이터 확인 완료...");
-                }
-                else{
-                    //화면전환
-                    Logger.d("Internal Data is Empty Change ChoiceActivity");
-                    Intent intent = new Intent(MainActivity.this, ChoiceActivity.class);
-                    startActivity(intent);
-                    finish();
-                    timer.cancel();
-                }
-            }
-        });
-
         timer.schedule(timerTask, 0, 3000);
     }
     TimerTask timerTask = new TimerTask() {
