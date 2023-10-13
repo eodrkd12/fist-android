@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -50,10 +51,10 @@ public class ChoiceActivity extends AppCompatActivity {
         binding.officeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(officeIsInitializing){
-                    officeIsInitializing = false;
-                    return;
-                }
+//                if(officeIsInitializing){
+//                    officeIsInitializing = false;
+//                    return;
+//                }
                 seletedOfficeIndex = i;
                 Logger.d("SeletedOfficeIndex : " + seletedOfficeIndex);
 
@@ -61,6 +62,7 @@ public class ChoiceActivity extends AppCompatActivity {
                 monitorRepository.fetchMonitor(officeRepository.officeList[i].getOfficeId(), 0, 10, new MonitorRepository.MonitorFetchCallback() {
                     @Override
                     public void onMonitorFetchComplete() {
+                        Logger.d(monitorRepository.monitorNameList.get(0).toString());
                         // Monitor 데이터가 업데이트된 후에 Spinner를 업데이트
                         ArrayAdapter monitorAdapter = new ArrayAdapter(
                                 getApplicationContext(),
@@ -82,10 +84,10 @@ public class ChoiceActivity extends AppCompatActivity {
         binding.monitorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(monitorIsInitializing){
-                    monitorIsInitializing = false;
-                    return;
-                }
+//                if(monitorIsInitializing){
+//                    monitorIsInitializing = false;
+//                    return;
+//                }
                 seletedMonitorIndex = i;
                 Logger.d("SeletedMonitorIndex : " + seletedMonitorIndex);
             }

@@ -11,21 +11,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:background="#001b30">
 
-        <!-- 상단 바  -->
+        <!-- Header  -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:background="#05151F"
+            android:layout_weight="0.18"
             android:orientation="horizontal">
 
-            <!-- 타이머 -->
+            <!-- HeaderLeft -->
             <RelativeLayout
+                android:id="@+id/headerLeft"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.2">
+                android:layout_weight="0.33">
 
                 <ProgressBar
                     android:id="@+id/timerProgressBar"
@@ -53,28 +54,32 @@
 
             </RelativeLayout>
 
-            <!-- 세트 수 -->
+            <!-- HeaderRight -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2.5"
+                android:layout_weight="0.67"
                 android:orientation="vertical">
                 <TextView
+                    android:id="@+id/remainGuideText"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1.5"
+                    android:layout_weight="1"
                     android:layout_gravity="center"
                     android:gravity="center"
+                    android:textAlignment="center"
                     android:text="REMAIN SETS"
                     android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:textSize="30dp"/>
+                    android:textSize="35dp"/>
                 <TextView
                     android:id="@+id/remainSetText"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="2.5"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
                     android:gravity="center"
+                    android:textAlignment="center"
                     android:text="1"
                     android:textStyle="bold"
                     android:textColor="@color/white"
@@ -86,7 +91,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.05"
+            android:layout_weight="0.04"
             android:background="@color/black"/>
 
         <!-- 비디오 -->
@@ -94,8 +99,8 @@
             android:id="@+id/exerciseGridLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:background="#05151F"
+            android:layout_weight="0.74"
+            android:background="#001b30"
             android:orientation="vertical">
 
             <!-- 비디오뷰 1, 2 -->
@@ -104,71 +109,88 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:layout_gravity="center">
-
                 <!-- 비디오 1 -->
-                <FrameLayout
+                <LinearLayout
                     android:id="@+id/videoFrame0"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:padding="1dp">
-
-                    <VideoView
-                        android:id="@+id/videoView0"
-                        android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+                    <View
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"/>
-                    <TextView
-                        android:id="@+id/videoStation0"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="start|top" />
-
-                    <TextView
-                        android:id="@+id/videoCount0"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="10-9.."
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="end|top" />
-                </FrameLayout>
-
+                        android:layout_weight="0.01"
+                        android:background="@color/black"/>
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_gravity="center">
+                        <VideoView
+                            android:id="@+id/videoView0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:id="@+id/videoStation0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="start|top" />
+                        <TextView
+                            android:id="@+id/videoCount0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10-9.."
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="end|top" />
+                    </FrameLayout>
+                </LinearLayout>
                 <!-- 비디오 2 -->
-                <FrameLayout
+                <LinearLayout
                     android:id="@+id/videoFrame1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="1dp">
-
-                    <VideoView
-                        android:id="@+id/videoView1"
-                        android:layout_width="match_parent"
+                    android:layout_weight="1">
+                    <View
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                    <TextView
-                        android:id="@+id/videoStation1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="start|top" />
-
-                    <TextView
-                        android:id="@+id/videoCount1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="20-15.."
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="end|top" />
-                </FrameLayout>
+                        android:layout_weight="0.01"
+                        android:background="@color/black"/>
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <VideoView
+                            android:id="@+id/videoView1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+                        <TextView
+                            android:id="@+id/videoStation1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="start|top" />
+                        <TextView
+                            android:id="@+id/videoCount1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="20-15.."
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="end|top" />
+                    </FrameLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <!-- 비디오뷰 3, 4 -->
@@ -178,70 +200,83 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_gravity="center">
-
                 <!-- 비디오 3 -->
-                <FrameLayout
+                <LinearLayout
                     android:id="@+id/videoFrame2"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="1dp">
-
-                    <VideoView
-                        android:id="@+id/videoView2"
-                        android:layout_width="match_parent"
+                    android:layout_weight="1">
+                    <View
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                    <TextView
-                        android:id="@+id/videoStation2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="start|top" />
-
-                    <TextView
-                        android:id="@+id/videoCount2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="20-15.."
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="end|top" />
-                </FrameLayout>
-
+                        android:layout_weight="0.01"
+                        android:background="@color/black"/>
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <VideoView
+                            android:id="@+id/videoView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:id="@+id/videoStation2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="start|top" />
+                        <TextView
+                            android:id="@+id/videoCount2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10-9.."
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="end|top" />
+                    </FrameLayout>
+                </LinearLayout>
                 <!-- 비디오 4 -->
-                <FrameLayout
+                <LinearLayout
                     android:id="@+id/videoFrame3"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="1dp">
-
-                    <VideoView
-                        android:id="@+id/videoView3"
-                        android:layout_width="match_parent"
+                    android:layout_weight="1">
+                    <View
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                    <TextView
-                        android:id="@+id/videoStation3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="start|top" />
+                        android:layout_weight="0.01"
+                        android:background="@color/black"/>
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <VideoView
+                            android:id="@+id/videoView3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+                        <TextView
+                            android:id="@+id/videoStation3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="start|top" />
+                        <TextView
+                            android:id="@+id/videoCount3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="20-15.."
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="end|top" />
+                    </FrameLayout>
+                </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/videoCount3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="20-15.."
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="end|top" />
-                </FrameLayout>
             </LinearLayout>
 
             <!-- 비디오뷰 5, 6 -->
@@ -251,70 +286,83 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_gravity="center">
-
                 <!-- 비디오 5 -->
-                <FrameLayout
+                <LinearLayout
                     android:id="@+id/videoFrame4"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="1dp">
-
-                    <VideoView
-                        android:id="@+id/videoView4"
-                        android:layout_width="match_parent"
+                    android:layout_weight="1">
+                    <View
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                    <TextView
-                        android:id="@+id/videoStation4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="start|top" />
-
-                    <TextView
-                        android:id="@+id/videoCount4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="20-15.."
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="end|top" />
-                </FrameLayout>
-
+                        android:layout_weight="0.01"
+                        android:background="@color/black"/>
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <VideoView
+                            android:id="@+id/videoView4"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:id="@+id/videoStation4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="start|top" />
+                        <TextView
+                            android:id="@+id/videoCount4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10-9.."
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="end|top" />
+                    </FrameLayout>
+                </LinearLayout>
                 <!-- 비디오 6 -->
-                <FrameLayout
+                <LinearLayout
                     android:id="@+id/videoFrame5"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="1dp">
-
-                    <VideoView
-                        android:id="@+id/videoView5"
-                        android:layout_width="match_parent"
+                    android:layout_weight="1">
+                    <View
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                    <TextView
-                        android:id="@+id/videoStation5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="start|top" />
+                        android:layout_weight="0.01"
+                        android:background="@color/black"/>
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <VideoView
+                            android:id="@+id/videoView5"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1" />
+                        <TextView
+                            android:id="@+id/videoStation5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="2"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="start|top" />
+                        <TextView
+                            android:id="@+id/videoCount5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="20-15.."
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="end|top" />
+                    </FrameLayout>
+                </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/videoCount5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="20-15.."
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="end|top" />
-                </FrameLayout>
             </LinearLayout>
 
             <!-- 비디오뷰 7, 8 -->
@@ -324,46 +372,59 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:layout_gravity="center">
-
                 <!-- 비디오 7 -->
-                <FrameLayout
+                <LinearLayout
                     android:id="@+id/videoFrame6"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:padding="1dp">
-
-                    <VideoView
-                        android:id="@+id/videoView6"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-                    <TextView
-                        android:id="@+id/videoStation6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2"
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="start|top" />
-
-                    <TextView
-                        android:id="@+id/videoCount6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="20-15.."
-                        android:textStyle="bold"
-                        android:textSize="15dp"
-                        android:layout_gravity="end|top" />
-
-                    <!-- 비디오 8 -->
-                    <FrameLayout
-                        android:id="@+id/videoFrame7"
+                    android:layout_weight="1">
+                    <View
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:padding="1dp">
-
+                        android:layout_weight="0.01"
+                        android:background="@color/black"/>
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <VideoView
+                            android:id="@+id/videoView6"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:id="@+id/videoStation6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="start|top" />
+                        <TextView
+                            android:id="@+id/videoCount6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10-9.."
+                            android:textStyle="bold"
+                            android:textSize="15dp"
+                            android:layout_gravity="end|top" />
+                    </FrameLayout>
+                </LinearLayout>
+                <!-- 비디오 8 -->
+                <LinearLayout
+                    android:id="@+id/videoFrame7"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.01"
+                        android:background="@color/black"/>
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
                         <VideoView
                             android:id="@+id/videoView7"
                             android:layout_width="match_parent"
@@ -377,7 +438,6 @@
                             android:textStyle="bold"
                             android:textSize="15dp"
                             android:layout_gravity="start|top" />
-
                         <TextView
                             android:id="@+id/videoCount7"
                             android:layout_width="wrap_content"
@@ -387,10 +447,17 @@
                             android:textSize="15dp"
                             android:layout_gravity="end|top" />
                     </FrameLayout>
-                </FrameLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.04"
+            android:background="@color/black"/>
 
     </LinearLayout>
 
