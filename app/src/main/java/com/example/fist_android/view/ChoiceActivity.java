@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,7 +16,10 @@ import com.example.fist_android.R;
 import com.example.fist_android.databinding.ActivityChoiceBinding;
 import com.example.fist_android.repository.MonitorRepository;
 import com.example.fist_android.repository.OfficeRepository;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 
 public class ChoiceActivity extends AppCompatActivity {
 
@@ -26,6 +30,8 @@ public class ChoiceActivity extends AppCompatActivity {
 
     int selectedOfficeIndex;
     int selectedMonitorIndex;
+    int selectedSecondMonitorIndex = -1;
+    int selectedHorizontalMonitorIndex = -1;
     private boolean officeIsInitializing = true;
     private boolean monitorIsInitializing = true;
 
@@ -34,6 +40,12 @@ public class ChoiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+        //Logger
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                .showThreadInfo(false)
+//                .methodCount(0)
+                .build();
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_choice);
 
@@ -74,6 +86,18 @@ public class ChoiceActivity extends AppCompatActivity {
                                     monitorRepository.monitorNameList);
                             binding.monitorSpinner.setAdapter(monitorAdapter);
 
+                            ArrayAdapter secondMonitorAdapter = new ArrayAdapter(
+                                    getApplicationContext(),
+                                    androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                                    monitorRepository.monitorNameList);
+                            binding.secondMonitorSpinner.setAdapter(secondMonitorAdapter);
+
+                            ArrayAdapter horizontalMonitorAdapter = new ArrayAdapter(
+                                    getApplicationContext(),
+                                    androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+                                    monitorRepository.horizontalMonitorNameList);
+                            binding.horizontalMonitorSpinner.setAdapter(horizontalMonitorAdapter);
+
                             // 선택된 항목을 0번으로 설정
                             binding.monitorSpinner.setSelection(0);
                         }
@@ -96,6 +120,23 @@ public class ChoiceActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
 
+        binding.secondMonitorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedSecondMonitorIndex = i-1;
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+        binding.horizontalMonitorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedHorizontalMonitorIndex = i-1;
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
+
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +146,11 @@ public class ChoiceActivity extends AppCompatActivity {
                 }
 
                 officeRepository.saveOfficeData(getApplicationContext(), selectedOfficeIndex);
-                monitorRepository.saveMonitorData(getApplicationContext(), selectedMonitorIndex);
+                monitorRepository.saveMonitorData(
+                        getApplicationContext(),
+                        selectedMonitorIndex,
+                        selectedSecondMonitorIndex,
+                        selectedHorizontalMonitorIndex);
 
                 Intent intent = new Intent(ChoiceActivity.this, MainActivity.class);
                 startActivity(intent);

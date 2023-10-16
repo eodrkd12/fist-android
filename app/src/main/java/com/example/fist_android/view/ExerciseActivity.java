@@ -12,6 +12,8 @@ import android.os.CountDownTimer;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -50,6 +52,8 @@ public class ExerciseActivity extends AppCompatActivity {
     //=============================================================//
     float headerFontRate = 3.5f;
     float headerPaddingRate = 2f;
+    float stationFontRate = 3.5f;
+    float countFontRate = 2.5f;
     //=============================================================//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +91,7 @@ public class ExerciseActivity extends AppCompatActivity {
 
         remainGuideText.setTextSize(headerFontRate * realHeightInDp / 100);
         remainSetText.setTextSize(headerFontRate * realHeightInDp / 100);
+        progressText.setTextSize(headerFontRate * realHeightInDp / 100);
         headerLeft.setPadding(
                 (int) (headerPaddingRate * realHeightInDp / 100),
                 (int) (headerPaddingRate * realHeightInDp / 100),
@@ -316,6 +321,8 @@ public class ExerciseActivity extends AppCompatActivity {
         thirdLayout.setLayoutParams(thirdParams);
         fourthLayout.setLayoutParams(fourthParams);
 
+        setStationText();
+
         for(int i = 0; i < 8; i++){
             final int currentIndex = i;
             videoView[i].setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -327,6 +334,33 @@ public class ExerciseActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void setStationText(){
+        TextView stationText[] = new TextView[8];
+        TextView countText[] = new TextView[8];
+        stationText[0] = binding.videoStation0; countText[0] = binding.videoCount0;
+        stationText[1] = binding.videoStation1; countText[1] = binding.videoCount1;
+        stationText[2] = binding.videoStation2; countText[2] = binding.videoCount2;
+        stationText[3] = binding.videoStation3; countText[3] = binding.videoCount3;
+        stationText[4] = binding.videoStation4; countText[4] = binding.videoCount4;
+        stationText[5] = binding.videoStation5; countText[5] = binding.videoCount5;
+        stationText[6] = binding.videoStation6; countText[6] = binding.videoCount6;
+        stationText[7] = binding.videoStation7; countText[7] = binding.videoCount7;
+
+        FrameLayout.LayoutParams stationParams = (FrameLayout.LayoutParams) binding.videoStation0.getLayoutParams();
+        FrameLayout.LayoutParams countParams = (FrameLayout.LayoutParams) binding.videoCount0.getLayoutParams();
+
+        stationParams.setMargins((int)(1.5f * realHeightInDp / 100), (int)(1.5f * realHeightInDp / 100), 0, 0);
+        countParams.setMargins(0,(int)(1.5f * realHeightInDp / 100),(int)(1.5f * realHeightInDp / 100),0);
+        for(int i = 0; i < 8; i++){
+            stationText[i].setTextSize(stationFontRate * realHeightInDp / 100);
+            stationText[i].setLayoutParams(stationParams);
+
+            countText[i].setTextSize(countFontRate * realHeightInDp / 100);
+            countText[i].setLayoutParams(countParams);
+        }
+
     }
 
 }

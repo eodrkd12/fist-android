@@ -47,6 +47,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:fontFamily="@font/helveticaneueblackext"
                     android:text="1"
                     android:textColor="@color/white"
                     android:textSize="50dp"
@@ -69,9 +70,10 @@
                     android:gravity="center"
                     android:textAlignment="center"
                     android:text="REMAIN SETS"
+                    android:fontFamily="@font/helveticaneueblackext"
                     android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:textSize="35dp"/>
+                    android:textSize="25dp"/>
                 <TextView
                     android:id="@+id/remainSetText"
                     android:layout_width="match_parent"
@@ -81,6 +83,7 @@
                     android:gravity="center"
                     android:textAlignment="center"
                     android:text="1"
+                    android:fontFamily="@font/helveticaneueblackext"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:textSize="50dp"/>
@@ -139,13 +142,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="1"
                                 android:textStyle="bold"
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textSize="15dp"
-                                android:layout_gravity="start|top" />
+                                android:layout_gravity="start|top"/>
                             <TextView
                                 android:id="@+id/videoCount0"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10-9.."
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textStyle="bold"
                                 android:textSize="15dp"
                                 android:layout_gravity="end|top" />
@@ -174,15 +179,17 @@
                                 android:id="@+id/videoStation1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2"
+                                android:text="1"
                                 android:textStyle="bold"
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textSize="15dp"
-                                android:layout_gravity="start|top" />
+                                android:layout_gravity="start|top"/>
                             <TextView
                                 android:id="@+id/videoCount1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="20-15.."
+                                android:text="10-9.."
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textStyle="bold"
                                 android:textSize="15dp"
                                 android:layout_gravity="end|top" />
@@ -223,13 +230,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="1"
                                 android:textStyle="bold"
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textSize="15dp"
-                                android:layout_gravity="start|top" />
+                                android:layout_gravity="start|top"/>
                             <TextView
                                 android:id="@+id/videoCount2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10-9.."
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textStyle="bold"
                                 android:textSize="15dp"
                                 android:layout_gravity="end|top" />
@@ -258,15 +267,17 @@
                                 android:id="@+id/videoStation3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2"
+                                android:text="1"
                                 android:textStyle="bold"
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textSize="15dp"
-                                android:layout_gravity="start|top" />
+                                android:layout_gravity="start|top"/>
                             <TextView
                                 android:id="@+id/videoCount3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="20-15.."
+                                android:text="10-9.."
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textStyle="bold"
                                 android:textSize="15dp"
                                 android:layout_gravity="end|top" />
@@ -308,13 +319,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="1"
                                 android:textStyle="bold"
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textSize="15dp"
-                                android:layout_gravity="start|top" />
+                                android:layout_gravity="start|top"/>
                             <TextView
                                 android:id="@+id/videoCount4"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10-9.."
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textStyle="bold"
                                 android:textSize="15dp"
                                 android:layout_gravity="end|top" />
@@ -343,15 +356,17 @@
                                 android:id="@+id/videoStation5"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2"
+                                android:text="1"
                                 android:textStyle="bold"
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textSize="15dp"
-                                android:layout_gravity="start|top" />
+                                android:layout_gravity="start|top"/>
                             <TextView
                                 android:id="@+id/videoCount5"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="20-15.."
+                                android:text="10-9.."
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textStyle="bold"
                                 android:textSize="15dp"
                                 android:layout_gravity="end|top" />
@@ -392,13 +407,15 @@
                                 android:layout_height="wrap_content"
                                 android:text="1"
                                 android:textStyle="bold"
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textSize="15dp"
-                                android:layout_gravity="start|top" />
+                                android:layout_gravity="start|top"/>
                             <TextView
                                 android:id="@+id/videoCount6"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="10-9.."
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textStyle="bold"
                                 android:textSize="15dp"
                                 android:layout_gravity="end|top" />
@@ -427,15 +444,17 @@
                                 android:id="@+id/videoStation7"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2"
+                                android:text="1"
                                 android:textStyle="bold"
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textSize="15dp"
-                                android:layout_gravity="start|top" />
+                                android:layout_gravity="start|top"/>
                             <TextView
                                 android:id="@+id/videoCount7"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="20-15.."
+                                android:text="10-9.."
+                                android:fontFamily="@font/helveticaneueblackext"
                                 android:textStyle="bold"
                                 android:textSize="15dp"
                                 android:layout_gravity="end|top" />
