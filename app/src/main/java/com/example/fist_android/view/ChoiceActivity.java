@@ -40,12 +40,6 @@ public class ChoiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
-        //Logger
-        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
-                .showThreadInfo(false)
-//                .methodCount(0)
-                .build();
-        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_choice);
 
@@ -153,8 +147,10 @@ public class ChoiceActivity extends AppCompatActivity {
                         selectedHorizontalMonitorIndex);
 
                 Intent intent = new Intent(ChoiceActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 finish();
+
             }
         });
     }

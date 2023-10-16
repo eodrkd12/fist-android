@@ -108,7 +108,8 @@ public class SocketManager {
         @Override
         public void call(Object... args) {
             Logger.i("Pause Exercise");
-            exerciseRepository.exercisePause = !exerciseRepository.exercisePause;
+//            exerciseRepository.exercisePause = !exerciseRepository.exercisePause;
+            exerciseRepository.setExercisePause(!exerciseRepository.exercisePause);
         }
     };
 

@@ -100,9 +100,6 @@ public class MonitorRepository {
                             horizontalMonitorNameList.add(monitor.getMonitorName());
                         }
                     }
-                    Logger.d("length : " + monitorList.size());
-                    Logger.d("length2 : " + horizontalMonitorList.size());
-
                     // 응답을 처리한 후에 콜백을 호출하여 UI 업데이트를 요청합니다.
                     if (callback != null) {
                         callback.onMonitorFetchComplete();

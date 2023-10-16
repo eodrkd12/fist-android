@@ -9,6 +9,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
@@ -22,13 +24,18 @@ import android.widget.VideoView;
 
 import com.example.fist_android.R;
 import com.example.fist_android.databinding.ActivityExerciseBinding;
+import com.example.fist_android.get.Observer;
 import com.example.fist_android.repository.CourseRepository;
 import com.example.fist_android.repository.ExerciseRepository;
+import com.example.fist_android.socket.SocketManager;
+import com.orhanobut.logger.Logger;
 
-public class ExerciseActivity extends AppCompatActivity {
+public class ExerciseActivity extends AppCompatActivity implements Observer {
     ActivityExerciseBinding binding;
     ExerciseRepository exerciseRepository = ExerciseRepository.getInstance();
     CourseRepository courseRepository = CourseRepository.getInstance();
+    SocketManager socketManager = SocketManager.getInstance();
+
     //=============================================================//
     private enum TimerStatus {
         STARTED,
@@ -37,6 +44,8 @@ public class ExerciseActivity extends AppCompatActivity {
     private int maxSeconds = 20 * 1000;
     private TimerStatus timerStatus = TimerStatus.STOPPED;
     private CountDownTimer countDownTimer;
+    private Handler handler = new Handler(Looper.getMainLooper());
+    //=============================================================//
     private ProgressBar progressBarCircle;
     private TextView progressText;
     private TextView remainGuideText;
@@ -55,6 +64,36 @@ public class ExerciseActivity extends AppCompatActivity {
     float stationFontRate = 3.5f;
     float countFontRate = 2.5f;
     //=============================================================//
+    boolean[] nullCheck = new boolean[8];
+    VideoView videoView[] = new VideoView[8];
+    LinearLayout videoFrame[] = new LinearLayout[8];
+    TextView stationText[] = new TextView[8];
+    TextView countText[] = new TextView[8];
+
+    int videoPausePosition[] = new int[8];
+    //=============================================================//
+    //Observer
+    //=============================================================//
+    @Override
+    public void onExercisePauseChanged(boolean isPaused) {
+        if (isPaused) {
+            pauseCountDownTimer();
+            for(int i = 0; i < 8; i++){
+//                super.onPause();
+                videoView[i].pause();
+                videoPausePosition[i] = videoView[i].getCurrentPosition();
+            }
+        } else {
+            resumeCountDownTimer();
+            for(int i = 0; i < 8; i++){
+//                super.onResume();
+                videoView[i].seekTo(videoPausePosition[i]);
+                videoView[i].start();
+            }
+        }
+    }
+
+    //=============================================================//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +106,16 @@ public class ExerciseActivity extends AppCompatActivity {
          */
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+        /**
+         * Socket Event 설정
+         */
+        socketManager.getSocket().on("pause", socketManager.pauseExercise);
+        socketManager.getSocket().on("stop", socketManager.stopExercise);
+
+        /**
+         * Observer
+         */
+        exerciseRepository.registerObserver(this);
 
         /**
          * Device의 실제 Height값을 DP단위로 가져와서 저장
@@ -75,7 +124,9 @@ public class ExerciseActivity extends AppCompatActivity {
         realWidthInDp = displayMetrics.widthPixels / displayMetrics.density;
         realHeightInDp = displayMetrics.heightPixels / displayMetrics.density;
 
-        //binding
+        /**
+         * binding header widget
+         */
         progressBarCircle = binding.timerProgressBar;
         progressText = binding.progressTextView;
         remainGuideText = binding.remainGuideText;
@@ -83,7 +134,9 @@ public class ExerciseActivity extends AppCompatActivity {
         headerLeft = binding.headerLeft;
 
 
-        //video row 1~4
+        /**
+         * VideoLayout widget 1 ~ 4
+         */
         firstLayout = binding.videoLayout0;
         secondLayout = binding.videoLayout1;
         thirdLayout = binding.videoLayout2;
@@ -98,11 +151,11 @@ public class ExerciseActivity extends AppCompatActivity {
                 (int) (headerPaddingRate * realHeightInDp / 100),
                 (int) (headerPaddingRate * realHeightInDp / 100));
 
-//        startStop();
-
         courseRepository.sortExerciseVideo();
 
         setExerciseVideo();
+
+        startStop();
     }
 
 
@@ -135,32 +188,36 @@ public class ExerciseActivity extends AppCompatActivity {
      * 카운트다운 시작 기능
      */
     private void startCountDownTimer() {
-        countDownTimer = new CountDownTimer(maxSeconds, 100) {
+        handler.post(new Runnable() {
             @Override
-            public void onTick(long millisUntilFinished) {
-                int progress = (int) (millisUntilFinished);
-                if ((maxSeconds - millisUntilFinished) % 1000 > 0) {
-                    maxSeconds = maxSeconds - 1000;
-                    progressText.setText(String.valueOf(maxSeconds / 1000));
-                }
-                progressBarCircle.setProgress((int) (progress));
-            }
+            public void run() {
+                countDownTimer = new CountDownTimer(maxSeconds, 100) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        int progress = (int) (millisUntilFinished);
+                        if ((maxSeconds - millisUntilFinished) % 1000 > 0) {
+                            maxSeconds = maxSeconds - 1000;
+                            progressText.setText(String.valueOf(maxSeconds / 1000));
+                        }
+                        progressBarCircle.setProgress((int) (progress));
+                    }
 
-            @Override
-            public void onFinish() {
-                setProgressBarValues();
+                    @Override
+                    public void onFinish() {
+                        setProgressBarValues();
 
-                Drawable newProgressDrawable = getResources().getDrawable(R.drawable.drawable_circle_outer_red);
-                progressBarCircle.setProgressDrawable(newProgressDrawable);
-                maxSeconds = 20 * 1000;
+                        Drawable newProgressDrawable = getResources().getDrawable(R.drawable.drawable_circle_outer_red);
+                        progressBarCircle.setProgressDrawable(newProgressDrawable);
+                        maxSeconds = 20 * 1000;
 
-                timerStatus = TimerStatus.STARTED;
+                        timerStatus = TimerStatus.STARTED;
 //                timerStatus = TimerStatus.STOPPED;
-                startCountDownTimer();
-
+                        startCountDownTimer();
+                    }
+                }.start();
             }
-        }.start();
-        countDownTimer.start();
+        });
+//        countDownTimer.start();
     }
 
     /**
@@ -171,10 +228,30 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
     /**
+     * 카운트 다운 일시정지
+     */
+    private void pauseCountDownTimer(){
+        if (timerStatus == TimerStatus.STARTED) {
+            Logger.d("타이머 일시정지");
+            countDownTimer.cancel(); // 타이머 일시 중지
+        }
+    }
+
+    /**
+     * 카운트 다운 일시정지 해제 / 재시작
+     */
+    private void resumeCountDownTimer(){
+        if (timerStatus == TimerStatus.STARTED) {
+            Logger.d("타이머 재시작");
+            startCountDownTimer(); // 타이머 재시작
+        }
+    }
+
+    /**
      * 원형 프로그레스 바에 값 세팅
      */
     private void setProgressBarValues() {
-        progressText.setText(String.valueOf(maxSeconds / 1000));
+//        progressText.setText(String.valueOf(maxSeconds / 1000));
 
         progressBarCircle.setMax((int) maxSeconds);
         progressBarCircle.setProgress((int) maxSeconds);
@@ -185,9 +262,9 @@ public class ExerciseActivity extends AppCompatActivity {
     //Exercise Video
     //=============================================================//
     public void setExerciseVideo(){
-        boolean[] nullCheck = new boolean[8];
-        VideoView videoView[] = new VideoView[8];
-        LinearLayout videoFrame[] = new LinearLayout[8];
+//        boolean[] nullCheck = new boolean[8];
+//        VideoView videoView[] = new VideoView[8];
+//        LinearLayout videoFrame[] = new LinearLayout[8];
         int rowCheck = 0;
 
         videoView[0] = binding.videoView0;
@@ -337,8 +414,6 @@ public class ExerciseActivity extends AppCompatActivity {
     }
 
     public void setStationText(){
-        TextView stationText[] = new TextView[8];
-        TextView countText[] = new TextView[8];
         stationText[0] = binding.videoStation0; countText[0] = binding.videoCount0;
         stationText[1] = binding.videoStation1; countText[1] = binding.videoCount1;
         stationText[2] = binding.videoStation2; countText[2] = binding.videoCount2;

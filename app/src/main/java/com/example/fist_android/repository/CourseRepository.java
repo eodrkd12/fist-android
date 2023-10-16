@@ -59,7 +59,6 @@ public class CourseRepository {
                     ResponseDTO<Course> courseData = response.body();
                     course = courseData.getData();
                     courseCategory = course.getCategoryList();
-                    Logger.d("eodrkd", course);
                     for(CourseCategory categoryList : courseCategory){
                         if(categoryList.getExerciseType().compareTo("WARM UP") == 0){
                             ExerciseList[] wuDataList = categoryList.getExerciseList();

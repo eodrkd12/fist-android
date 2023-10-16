@@ -49,19 +49,23 @@ public class MainActivity extends AppCompatActivity {
 //        PreferenceManager.clear(getApplicationContext());
 
         //Logger
-        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
-                .showThreadInfo(false)
-//                .methodCount(0)
-                .build();
-        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
+//        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+//                .showThreadInfo(false)
+////                .methodCount(0)
+//                .build();
+//        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
 
-        //Get Internal Data
+        /**
+         * Preference Data 불러오기
+         */
         officeRepository.getOfficeData(getApplicationContext());
         monitorRepository.getMonitorData(getApplicationContext());
 //        officeRepository.printOfficeData();
 //        monitorRepository.printMonitorData();
 
-        //Socket
+        /**
+         * Socket Event 설정
+         */
         socketManager.getSocket().on(Socket.EVENT_CONNECT, socketManager.onConnect);
         socketManager.getSocket().on("course", socketManager.getTodayCourse);
         socketManager.getSocket().on("start", socketManager.startExercise);
@@ -84,13 +88,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 timer.cancel();
-            }
-            if(exerciseRepository.exerciseStart || exerciseRepository.exerciseTestStart){
-                //화면전환
-                Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
-                startActivity(intent);
-                finish();
-                timer.cancel();
+
+                if(exerciseRepository.exerciseStart || exerciseRepository.exerciseTestStart){
+                    //화면전환
+//                    Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
+//                    startActivity(intent);
+//                    finish();
+//                    timer.cancel();
+                }
             }
         }
     };
