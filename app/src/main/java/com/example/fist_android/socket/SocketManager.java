@@ -1,11 +1,14 @@
 package com.example.fist_android.socket;
 
+import android.text.format.DateFormat;
+
 import com.example.fist_android.repository.CourseRepository;
 import com.example.fist_android.repository.ExerciseRepository;
 import com.example.fist_android.repository.OfficeRepository;
 import com.orhanobut.logger.Logger;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatterBuilder;
 
 import io.socket.client.IO;
 import io.socket.client.*;
@@ -59,6 +62,7 @@ public class SocketManager {
             Logger.i("Get Today Course");
             courseRepository.downloadTodayCouse = true;
             LocalDate today = LocalDate.now();
+
             courseRepository.fetchCourseData(officeRepository.officeId, today.toString(), new CourseRepository.CourseFetchCallback() {
                 @Override
                 public void onCourseFetchComplete() {
@@ -94,7 +98,10 @@ public class SocketManager {
         @Override
         public void call(Object... args) {
             Logger.i("stop Exercise");
-            exerciseRepository.exerciseStop = true;
+//            exerciseRepository.exerciseStop = true;
+            exerciseRepository.setExerciseStop(!exerciseRepository.exerciseStop);
+            exerciseRepository.exerciseTestStart = false;
+            exerciseRepository.exerciseStart = false;
         }
     };
     /**
@@ -104,7 +111,8 @@ public class SocketManager {
         @Override
         public void call(Object... args) {
             Logger.i("Pause Exercise");
-            exerciseRepository.exercisePause = !exerciseRepository.exercisePause;
+//            exerciseRepository.exercisePause = !exerciseRepository.exercisePause;
+            exerciseRepository.setExercisePause(!exerciseRepository.exercisePause);
         }
     };
 

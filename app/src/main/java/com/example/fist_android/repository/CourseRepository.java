@@ -1,19 +1,16 @@
 package com.example.fist_android.repository;
 
+import com.example.fist_android.common.Constant;
 import com.example.fist_android.model.Course;
 import com.example.fist_android.model.CourseCategory;
-import com.example.fist_android.model.Exercise;
 import com.example.fist_android.model.ExerciseList;
-import com.example.fist_android.model.Monitor;
 import com.example.fist_android.model.ResponseDTO;
 import com.example.fist_android.model.RoundCaseList;
 import com.example.fist_android.model.Roundcase;
-import com.example.fist_android.preference.PreferenceManager;
 import com.example.fist_android.retrofit.RetrofitAPI;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,19 +39,19 @@ public class CourseRepository {
     public ArrayList<ExerciseList> warmupExerciseList = new ArrayList<>();
     public ArrayList<ExerciseList> cooldownExerciseList = new ArrayList<>();
     public ArrayList<ExerciseList> demoExerciseList = new ArrayList<>();
-    public ArrayList<Roundcase> weightRoundcase = new ArrayList<>();
-    public ArrayList<Roundcase> hiitRoundcase = new ArrayList<>();
+    public ArrayList<Roundcase> teamgameRoundcase = new ArrayList<>();
+    public ArrayList<Roundcase> workoutRoundcase = new ArrayList<>();
     //=============================================================//
     //Retrofit
     //=============================================================//
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://211.107.110.77:3000")
+            .baseUrl(Constant.BE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     RetrofitAPI retrofitAPI = retrofit.create(RetrofitAPI.class);
 
     public void fetchCourseData(String officeId, String courseDateStr, final CourseRepository.CourseFetchCallback callback) {
-        Logger.d("Course Fetch Start");
+        Logger.d("Course Fetch Start", officeId+ " " + courseDateStr);
         retrofitAPI.getCourseData(officeId, courseDateStr).enqueue(new Callback<ResponseDTO<Course>>() {
             @Override
             public void onResponse(Call<ResponseDTO<Course>> call, Response<ResponseDTO<Course>> response) {
@@ -69,11 +66,11 @@ public class CourseRepository {
                                 warmupExerciseList.add(data);
                             }
                         }
-                        else if(categoryList.getExerciseType().compareTo("WEIGHT") == 0){
+                        else if(categoryList.getExerciseType().compareTo("TEAM GAME") == 0){
                             //Roundcase
                             RoundCaseList[] roundDataList = categoryList.getRoundcaseList();
                             for(RoundCaseList data : roundDataList){
-                                weightRoundcase.add(data.getRoundcase());
+                                teamgameRoundcase.add(data.getRoundcase());
                             }
                             //Exercise
                             ExerciseList[] exerciseDataList = categoryList.getExerciseList();
@@ -83,11 +80,11 @@ public class CourseRepository {
                                 }
                             }
                         }
-                        else if(categoryList.getExerciseType().compareTo("HIIT") == 0){
+                        else if(categoryList.getExerciseType().compareTo("INDIVIDUAL WORKOUT") == 0){
                             //Roundcase
                             RoundCaseList[] roundDataList = categoryList.getRoundcaseList();
                             for(RoundCaseList data : roundDataList){
-                                hiitRoundcase.add(data.getRoundcase());
+                                workoutRoundcase.add(data.getRoundcase());
                             }
                             //Exercise
                             ExerciseList[] exerciseDataList = categoryList.getExerciseList();
@@ -128,27 +125,33 @@ public class CourseRepository {
     }
 
     //=============================================================//
-    //Print
-    //=============================================================//
+    public void sortExerciseVideo() {
+        ArrayList<ExerciseList> tempExerciseList = new ArrayList<>();
+        Logger.d("집중하세요 : " + exerciseList.size());
+        tempExerciseList.clear();
+        for(int i = 0; i < 8; i++){
+            tempExerciseList.add(null);
+        }
+        Logger.d("뭐 하기전 : " + tempExerciseList.size());
+        for(int i = 0; i < exerciseList.size(); i++){
+            ExerciseList exercise = exerciseList.get(i);
+            Logger.d("순서 : i " + i + "뒤에는 : " + exercise.getDisplayOrder());
+            int displayorder = exercise.getDisplayOrder();
+            tempExerciseList.add(displayorder, exercise);
+        }
+        Logger.d("넣기전 : "+ exerciseList.size() + "  /  " + tempExerciseList.size());
+        exerciseList = tempExerciseList;
+        Logger.d("넣기후 : "+ exerciseList.size() + "  /  " + tempExerciseList.size());
+
+        for(int i = 0; i < 8; i++){
+            Logger.d("index : " + i + " displayOrder : " + (exerciseList.get(i) != null ? exerciseList.get(i).getDisplayOrder() + "" +
+                    " exercise : " + exerciseList.get(i).getExercise().getExerciseName() : "null"));
+        }
+    }
     public void printCourseData(){
-//        for(ExerciseList data : courseInstance.exerciseList){
-//            Logger.i("ExerciseName : " + data.getExercise().getExerciseName());
-//        }
         Logger.wtf("ExerciseLength : " + courseInstance.exerciseList.size());
-
-//        for(ExerciseList data : courseInstance.warmupExerciseList){
-//            Logger.i("WarmUpExerciseName : " + data.getExercise().getExerciseName());
-//        }
         Logger.wtf("WarmUpExerciseName : " + courseInstance.warmupExerciseList.size());
-
-//        for(ExerciseList data : courseInstance.cooldownExerciseList){
-//            Logger.i("CoolDownExerciseName : " + data.getExercise().getExerciseName());
-//        }
         Logger.wtf("CoolDownExerciseName : " + courseInstance.cooldownExerciseList.size());
-
-//        for(ExerciseList data : courseInstance.demoExerciseList){
-//            Logger.i("DemoExerciseName : " + data.getExercise().getExerciseName());
-//        }
         Logger.wtf("DemoExerciseName : " + courseInstance.demoExerciseList.size());
     }
 

@@ -28,6 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:fontFamily="@font/helveticaneueblackext"
                 android:text="데이터를 확인중입니다..."
                 android:textSize="30dp"
                 android:layout_marginTop="100dp"/>

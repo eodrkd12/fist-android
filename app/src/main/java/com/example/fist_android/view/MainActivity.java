@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.fist_android.R;
+import com.example.fist_android.common.LogManager;
 import com.example.fist_android.databinding.ActivityMainBinding;
+import com.example.fist_android.preference.PreferenceManager;
 import com.example.fist_android.repository.CourseRepository;
 import com.example.fist_android.repository.ExerciseRepository;
 import com.example.fist_android.repository.MonitorRepository;
@@ -48,19 +50,19 @@ public class MainActivity extends AppCompatActivity {
 //        PreferenceManager.clear(getApplicationContext());
 
         //Logger
-        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
-                .showThreadInfo(false)
-//                .methodCount(0)
-                .build();
-        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
+        LogManager logManager = LogManager.getInstance();
 
-        //Get Internal Data
+        /**
+         * Preference Data 불러오기
+         */
         officeRepository.getOfficeData(getApplicationContext());
         monitorRepository.getMonitorData(getApplicationContext());
 //        officeRepository.printOfficeData();
 //        monitorRepository.printMonitorData();
 
-        //Socket
+        /**
+         * Socket Event 설정
+         */
         socketManager.getSocket().on(Socket.EVENT_CONNECT, socketManager.onConnect);
         socketManager.getSocket().on("course", socketManager.getTodayCourse);
         socketManager.getSocket().on("start", socketManager.startExercise);
@@ -68,22 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        officeRepository.fetchOffice(new OfficeRepository.OfficeFetchCallback() {
-            @Override
-            public void onOfficeFetchComplete() {
-                if(checkData()){
-                    binding.guideText.setText("데이터 확인 완료...");
-                }
-                else{
-                    //화면전환
-                    Logger.d("Internal Data is Empty Change ChoiceActivity");
-                    Intent intent = new Intent(MainActivity.this, ChoiceActivity.class);
-                    startActivity(intent);
-                    finish();
-                    timer.cancel();
-                }
-            }
-        });
+        officeRepository.printOfficeData();
+        monitorRepository.printMonitorData();
 
         timer.schedule(timerTask, 0, 3000);
     }
@@ -92,13 +80,14 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if(courseRepository.downloadTodayCouse){
                 binding.guideText.setText("데이터 다운 완료...");
-            }
-            if(exerciseRepository.exerciseStart || exerciseRepository.exerciseTestStart){
-                //화면전환
-                Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
-                startActivity(intent);
-                finish();
-                timer.cancel();
+                if(exerciseRepository.exerciseStart || exerciseRepository.exerciseTestStart){
+                    //화면전환
+                    Logger.d("하 이년왜이래 : " + courseRepository.exerciseList.size());
+                    Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
+                    startActivity(intent);
+                    finish();
+                    timer.cancel();
+                }
             }
         }
     };
@@ -125,8 +114,5 @@ public class MainActivity extends AppCompatActivity {
         else{
             return false;
         }
-    }
-    private void setWidget(){
-        gudieText = binding.guideText;
     }
 }

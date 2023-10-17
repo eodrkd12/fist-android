@@ -19,6 +19,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="FIST"
+            android:fontFamily="@font/helveticaneueblackext"
             android:textSize="32dp"
             android:textStyle="bold"
             android:background="#ff05151F"
@@ -26,7 +27,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout" />
 
-        <!-- LinearLayout: 4 -->
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
@@ -36,17 +36,51 @@
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:layout_constraintBottom_toTopOf="@+id/button">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="지점"
+                android:fontFamily="@font/helveticaneueblackext"/>
             <Spinner
                 android:id="@+id/officeSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:spinnerMode="dropdown"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="세션1 모니터"
+                android:fontFamily="@font/helveticaneueblackext"/>
             <Spinner
                 android:id="@+id/monitorSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="세션2 모니터 (선택)"
+                android:fontFamily="@font/helveticaneueblackext"/>
+            <Spinner
+                android:id="@+id/secondMonitorSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:spinnerMode="dropdown"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="가로모니터"
+                android:fontFamily="@font/helveticaneueblackext"/>
+            <Spinner
+                android:id="@+id/horizontalMonitorSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:spinnerMode="dropdown"/>
 
@@ -58,6 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="완료"
+            android:fontFamily="@font/helveticaneueblackext"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

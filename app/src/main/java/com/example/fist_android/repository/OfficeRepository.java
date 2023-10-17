@@ -1,7 +1,9 @@
 package com.example.fist_android.repository;
 
 import android.content.Context;
+import android.util.Log;
 
+import com.example.fist_android.common.Constant;
 import com.example.fist_android.model.Office;
 import com.example.fist_android.model.ResponseDTO;
 import com.example.fist_android.preference.PreferenceManager;
@@ -10,6 +12,7 @@ import com.google.gson.annotations.SerializedName;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -34,7 +37,7 @@ public class OfficeRepository {
     }
     //=============================================================//
     public Office[] officeList;
-    public ArrayList<String> officeNameList = new ArrayList<>();
+    public ArrayList<String> officeNameList = new ArrayList<>(Arrays.asList("지점을 선택해주세요."));
     public String officeId;
     public String officeName;
     public String officeAddr;
@@ -45,7 +48,7 @@ public class OfficeRepository {
     //Retrofit
     //=============================================================//
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://211.107.110.77:3000")
+            .baseUrl(Constant.BE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
