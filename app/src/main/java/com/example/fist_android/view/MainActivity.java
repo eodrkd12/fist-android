@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.fist_android.R;
+import com.example.fist_android.common.LogManager;
 import com.example.fist_android.databinding.ActivityMainBinding;
 import com.example.fist_android.preference.PreferenceManager;
 import com.example.fist_android.repository.CourseRepository;
@@ -49,11 +50,7 @@ public class MainActivity extends AppCompatActivity {
 //        PreferenceManager.clear(getApplicationContext());
 
         //Logger
-//        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
-//                .showThreadInfo(false)
-////                .methodCount(0)
-//                .build();
-//        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
+        LogManager logManager = LogManager.getInstance();
 
         /**
          * Preference Data 불러오기
@@ -83,18 +80,13 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             if(courseRepository.downloadTodayCouse){
                 binding.guideText.setText("데이터 다운 완료...");
-
-                Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
-                startActivity(intent);
-                finish();
-                timer.cancel();
-
                 if(exerciseRepository.exerciseStart || exerciseRepository.exerciseTestStart){
                     //화면전환
-//                    Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                    timer.cancel();
+                    Logger.d("하 이년왜이래 : " + courseRepository.exerciseList.size());
+                    Intent intent = new Intent(MainActivity.this, ExerciseActivity.class);
+                    startActivity(intent);
+                    finish();
+                    timer.cancel();
                 }
             }
         }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -71,6 +72,7 @@ public class ExerciseActivity extends AppCompatActivity implements Observer {
     TextView countText[] = new TextView[8];
 
     int videoPausePosition[] = new int[8];
+
     //=============================================================//
     //Observer
     //=============================================================//
@@ -92,7 +94,14 @@ public class ExerciseActivity extends AppCompatActivity implements Observer {
             }
         }
     }
-
+    @Override
+    public void onExerciseStopChanged(boolean isStoped){
+        Logger.d("정지 정지 움직이면 쏜다 짜장면");
+        Intent intent = new Intent(ExerciseActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+        stopCountDownTimer();
+    }
     //=============================================================//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,8 +160,6 @@ public class ExerciseActivity extends AppCompatActivity implements Observer {
                 (int) (headerPaddingRate * realHeightInDp / 100),
                 (int) (headerPaddingRate * realHeightInDp / 100));
 
-        courseRepository.sortExerciseVideo();
-
         setExerciseVideo();
 
         startStop();
@@ -198,6 +205,7 @@ public class ExerciseActivity extends AppCompatActivity implements Observer {
                         if ((maxSeconds - millisUntilFinished) % 1000 > 0) {
                             maxSeconds = maxSeconds - 1000;
                             progressText.setText(String.valueOf(maxSeconds / 1000));
+                            Logger.d("개 시발련이다 : " + courseRepository.exerciseList.size());
                         }
                         progressBarCircle.setProgress((int) (progress));
                     }
@@ -262,10 +270,9 @@ public class ExerciseActivity extends AppCompatActivity implements Observer {
     //Exercise Video
     //=============================================================//
     public void setExerciseVideo(){
-//        boolean[] nullCheck = new boolean[8];
-//        VideoView videoView[] = new VideoView[8];
-//        LinearLayout videoFrame[] = new LinearLayout[8];
         int rowCheck = 0;
+
+        courseRepository.sortExerciseVideo();
 
         videoView[0] = binding.videoView0;
         videoView[1] = binding.videoView1;

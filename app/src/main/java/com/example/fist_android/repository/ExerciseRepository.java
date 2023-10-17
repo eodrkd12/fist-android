@@ -37,7 +37,17 @@ public class ExerciseRepository implements Subject {
     //=============================================================//
     public void setExercisePause(boolean isPaused) {
         exerciseInstance.exercisePause = isPaused;
-        notifyObservers(exercisePause);
+        for(Observer o : observerList){
+            o.onExercisePauseChanged(isPaused);
+        }
+        notifyObservers(exercisePause, false);
+    }
+    public void setExerciseStop(boolean isStoped){
+        exerciseInstance.exerciseStop = isStoped;
+        for(Observer o : observerList){
+            o.onExerciseStopChanged(isStoped);
+        }
+        notifyObservers(false, exerciseStop);
     }
 
     @Override
@@ -51,9 +61,10 @@ public class ExerciseRepository implements Subject {
     }
 
     @Override
-    public void notifyObservers(boolean isPaused) {
+    public void notifyObservers(boolean isPaused, boolean isStoped) {
         for(Observer o : observerList){
-            o.onExercisePauseChanged(isPaused);
+//            o.onExercisePauseChanged(isPaused);
+//            o.onExerciseStopChanged(isStoped);
         }
     }
 

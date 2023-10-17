@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.fist_android.R;
+import com.example.fist_android.common.LogManager;
 import com.example.fist_android.databinding.ActivityChoiceBinding;
 import com.example.fist_android.repository.MonitorRepository;
 import com.example.fist_android.repository.OfficeRepository;
@@ -40,6 +41,8 @@ public class ChoiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
+        LogManager logManager = LogManager.getInstance();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_choice);
 

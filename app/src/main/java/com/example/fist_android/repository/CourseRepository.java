@@ -126,23 +126,27 @@ public class CourseRepository {
 
     //=============================================================//
     public void sortExerciseVideo() {
-        ArrayList<ExerciseList> tempExerciseList = new ArrayList<>(8);
-
+        ArrayList<ExerciseList> tempExerciseList = new ArrayList<>();
+        Logger.d("집중하세요 : " + exerciseList.size());
+        tempExerciseList.clear();
         for(int i = 0; i < 8; i++){
             tempExerciseList.add(null);
         }
+        Logger.d("뭐 하기전 : " + tempExerciseList.size());
         for(int i = 0; i < exerciseList.size(); i++){
             ExerciseList exercise = exerciseList.get(i);
+            Logger.d("순서 : i " + i + "뒤에는 : " + exercise.getDisplayOrder());
             int displayorder = exercise.getDisplayOrder();
             tempExerciseList.add(displayorder, exercise);
         }
+        Logger.d("넣기전 : "+ exerciseList.size() + "  /  " + tempExerciseList.size());
         exerciseList = tempExerciseList;
+        Logger.d("넣기후 : "+ exerciseList.size() + "  /  " + tempExerciseList.size());
 
         for(int i = 0; i < 8; i++){
             Logger.d("index : " + i + " displayOrder : " + (exerciseList.get(i) != null ? exerciseList.get(i).getDisplayOrder() + "" +
                     " exercise : " + exerciseList.get(i).getExercise().getExerciseName() : "null"));
         }
-
     }
     public void printCourseData(){
         Logger.wtf("ExerciseLength : " + courseInstance.exerciseList.size());

@@ -41,6 +41,8 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
     //Socket.io
     implementation 'io.socket:socket.io-client:2.0.0'
+    //ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer:2.19.1'
 
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
